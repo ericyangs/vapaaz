@@ -1,4 +1,4 @@
-from app import app
+from vapaa import vapaa
 
-#app.run(debug=True)
-app.run(host="0.0.0.0")
+#vapaa.run(debug=True)
+vapaa.run(host="0.0.0.0")
