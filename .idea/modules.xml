@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VapaaZ_Python.iml" filepath="$PROJECT_DIR$/VapaaZ_Python.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vapaaz.iml" filepath="$PROJECT_DIR$/.idea/vapaaz.iml" />
     </modules>
   </component>
 </project>

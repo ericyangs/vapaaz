@@ -1,11 +1,4 @@
-from GETPARAMS import _ai_type_data
-from GETPARAMS import _ai_org_data
-from GETPARAMS import _ai_real_data
-from GETPARAMS import _di_data
-from GETPARAMS import _do_data
-from GETPARAMS import _do_write_data
-from GETPARAMS import _ao_data
-from GETPARAMS import _ao_write_data
+import GETPARAMS
 
 def read_TYPE(id):
     #AI
@@ -83,13 +76,13 @@ def PROCESS(data):
       if(int(_modbus[1], 16)==int("0x2",16)):
         j=0
         for i in reversed(format(int(_modbus[3], 16), 'b').zfill(4)):
-            _ai_type_data[int(_modbus[0], 16)-int("0x61", 16)][j]=i
+            GETPARAMS._ai_type_data[int(_modbus[0], 16)-int("0x61", 16)][j]=i
             j += 1
       else:
         #AI DATA
         j=0
         for i in range(3,3+int(_modbus[2], 16),2):
-            _ai_org_data[int(_modbus[0], 16)-int("0x61", 16)][j]=round(int(_modbus[i]+_modbus[i+1], 16)/1000, 2)
+            GETPARAMS._ai_org_data[int(_modbus[0], 16)-int("0x61", 16)][j]=round(int(_modbus[i]+_modbus[i+1], 16)/1000, 2)
             j += 1
 
     #DI Data
@@ -97,32 +90,17 @@ def PROCESS(data):
       if(int(_modbus[1], 16)==int("0x2",16)):
         j=0
         for i in reversed(format(int(_modbus[3], 16), 'b').zfill(8)):
-            _di_data[int(_modbus[0], 16)-int("0x41", 16)][j]=i
+            GETPARAMS._di_data[int(_modbus[0], 16)-int("0x41", 16)][j]=i
             j+=1
 
     #DO Data
     if(int(_modbus[0],16)>=int("0x21", 16) and int(_modbus[0],16)<=int("0x30", 16)):
-        if(int(_modbus[1], 16)==int("0x1",16)):
-            j=0
+        if int(_modbus[1], 16)==int("0x1",16):
+          j=0
             #取得資料長度
-            for i in reversed(format(int(_modbus[3], 16), 'b').zfill(4)):
-                _do_data[int(_modbus[0], 16)-int("0x21", 16)][j]=i
-                j+=1
-
+          for i in reversed(format(int(_modbus[3], 16), 'b').zfill(4)):
+              GETPARAMS._do_data[int(_modbus[0], 16)-int("0x21", 16)][j]=i
+              j+=1
+          #_do_write_data.copy(_do_data)
   except Exception as e:
       print("modbuspoll error:"+str(e))
-
-def READ_ORG_AI(cardid,port):
-    return _ai_org_data[cardid-1][port-1];
-
-def READ_AI(cardid,port):
-    return _ai_real_data[cardid-1][port-1];
-
-def READ_DI(cardid,port):
-    return _di_data[cardid-1][port-1];
-
-def READ_DO(cardid,port):
-    return _do_data[cardid-1][port-1];
-
-def READ_AO(cardid,port):
-    return _ao_data[cardid-1][port-1];

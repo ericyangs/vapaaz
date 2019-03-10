@@ -1,20 +1,9 @@
-import GETPARAMS,os,numpy as np
-from GETPARAMS import _ai_org_data
-from GETPARAMS import _ai_real_data
-from GETPARAMS import _ao_data
-from GETPARAMS import _di_data
-from GETPARAMS import _do_data
-from GETPARAMS import _do_write_data
-
+import GETPARAMS
 from flask import Flask, render_template
-PROJECT_PATH = os.path.dirname(os.path.realpath(__file__))
-restful = Flask(__name__,
-            template_folder=os.path.join(PROJECT_PATH, 'templates'),
-            static_folder=os.path.join(PROJECT_PATH, 'static')
-            )
+restful = Flask(__name__)
 
 def flaskThread():
-    restful.run()
+    restful.run(host="0.0.0.0")
 
 @restful.route('/')
 def home():
@@ -23,7 +12,7 @@ def home():
 
 @restful.route('/getai/')
 def get_all_ai():
-    return str(_ai_org_data[1][1])
+    return str(GETPARAMS._ai_org_data[1][1])
     pass
 
 #get /restful/<name>/item data: {name :}/item
@@ -33,7 +22,7 @@ def get_item_in_ai(cardid,port):
 
 @restful.route('/getdi/')
 def get_all_di():
-    return str(_ai_org_data[1][1])
+    return str(GETPARAMS._ai_org_data[1][1])
     pass
 
 #get /restful/<name>/item data: {name :}/item
@@ -44,7 +33,7 @@ def get_item_in_di(cardid,port):
 
 @restful.route('/getao/')
 def get_all_ao():
-    return str(_ai_org_data[1][1])
+    return str(GETPARAMS._ai_org_data[1][1])
     pass
 
 #get /restful/<name>/item data: {name :}/item
@@ -54,7 +43,7 @@ def get_item_in_ao(cardid,port):
 
 @restful.route('/getdo/')
 def get_all_do():
-    return str(_ai_org_data[1][1])
+    return str(GETPARAMS._ai_org_data[1][1])
     pass
 
 #get /restful/<name>/item data: {name :}/item
@@ -69,11 +58,8 @@ def set_act_in_ao(cardid,port,value):
     pass
 
 #get /restful/<name>/item data: {name :}/item
-@restful.route('/setdo/<string:cardid>/<string:port>/<string:value>')
+@restful.route('/setdo/<int:cardid>/<int:port>/<int:value>')
 def set_act_in_do(cardid,port,value):
-    _do_write_data[int(cardid)-1][int(port)-1]=int(value)
-    #_result = ""
-    #for cardid in range(GETPARAMS._doqty+1):
-    #    _result=str(cardid)+":<br>"
-    #    _result=_result+np.array2string(_do_data[cardid][::-1])+"<br>"
-    return str(_do_data)
+    GETPARAMS._doactflag=1
+    GETPARAMS._do_write_data[int(cardid)-1][int(port)-1]=int(value)
+    return "DO O:"+str(GETPARAMS._do_data)+"<br>DO W:"+str(GETPARAMS._do_write_data)
